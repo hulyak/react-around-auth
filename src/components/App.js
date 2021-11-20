@@ -133,7 +133,6 @@ function App() {
       .catch((err) => console.error(err));
   };
 
-
   // Authentication and Authorization
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -149,11 +148,11 @@ function App() {
     } else {
       setLoggedIn(false);
     }
-  }
+  };
 
   const handleLogin = () => {
     setLoggedIn(true);
-  }
+  };
 
   const handleLogout = () => {
     setLoggedIn(false);
@@ -161,77 +160,72 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-     {loggedIn && <Header handleLogout={handleLogout} />}
+      {loggedIn && <Header handleLogout={handleLogout} />}
       <Routes>
-        <ProtectedRoute path="/" loggedIn={loggedIn} component={Main} />
+        <ProtectedRoute
+          path="/"
+          loggedIn={loggedIn}
+          component={Main}
+          onEditProfileClick={handleEditProfileClick}
+          onAddPlaceClick={handleAddPlaceClick}
+          onEditAvatarClick={handleEditAvatarClick}
+          onCardClick={handleCardClick}
+          onConfirmDeleteClick={handleConfirmDeleteClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+        />
         <Route path="/register">
-            <Register />
+          <Register />
         </Route>
         <Route path="/login">
-            <Login handleLogin={handleLogin} />
+          <Login handleLogin={handleLogin} />
         </Route>
-        <Route exact path="/">
-            {loggedIn ? (
-                <Navigate to="/" />
-              ) : (
-                <Navigate to="/login" />
-              )}
+        <Route>
+          {loggedIn ? <Navigate to="/" /> : <Navigate to="/login" />}
         </Route>
-      <Main
-        onEditProfileClick={handleEditProfileClick}
-        onAddPlaceClick={handleAddPlaceClick}
-        onEditAvatarClick={handleEditAvatarClick}
-        onCardClick={handleCardClick}
-        onConfirmDeleteClick={handleConfirmDeleteClick}
-        cards={cards}
-        onCardLike={handleCardLike}
-        onCardDelete={handleCardDelete}
-      />
 
-      <EditProfilePopup
-        isOpen={isEditProfilePopupOpen}
-        onClose={closeAllPopups}
-        onUpdateUser={handleUpdateUser}
-      />
-      <EditAvatarPopup
-        isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}
-        onUpdateAvatar={handleUpdateAvatar}
-      />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-      <AddPlacePopup
-        isOpen={isAddPlacePopupOpen}
-        onClose={closeAllPopups}
-        onAddPlace={handleAddPlaceSubmit}
-      />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
-      <PopupWithForm
-        isOpen={isConfirmDeletePopupOpen}
-        onClose={closeAllPopups}
-        name="confirm"
-        title="Are you sure?"
-        buttonText="Yes"
-      />
+        <PopupWithForm
+          isOpen={isConfirmDeletePopupOpen}
+          onClose={closeAllPopups}
+          name="confirm"
+          title="Are you sure?"
+          buttonText="Yes"
+        />
 
-      <ImagePopup
-        card={selectedCard}
-        onClose={closeAllPopups}
-        isOpen={isPreviewImagePopupOpen}
-        name="preview"
-      />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          isOpen={isPreviewImagePopupOpen}
+          name="preview"
+        />
 
-      <PopupWithForm
-        isOpen={isConfirmDeletePopupOpen}
-        onClose={closeAllPopups}
-        name="confirm"
-        title="Are you sure?"
-        buttonText="Yes"
-      />
-      <Footer />
-        
-          
+        <PopupWithForm
+          isOpen={isConfirmDeletePopupOpen}
+          onClose={closeAllPopups}
+          name="confirm"
+          title="Are you sure?"
+          buttonText="Yes"
+        />
+        <Footer />
       </Routes>
-      
     </CurrentUserContext.Provider>
   );
 }

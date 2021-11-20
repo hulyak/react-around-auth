@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate} from "react-router-dom";
 import * as auth from "../utils/auth.js";
 
-
 const Register = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({

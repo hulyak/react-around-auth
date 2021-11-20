@@ -1,5 +1,3 @@
-
-
 const InfoTooltip = () => {
   return (
     <div>
