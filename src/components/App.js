@@ -134,7 +134,7 @@ function App() {
   };
 
   // Authentication and Authorization
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   // const handleTokenCheck = () => {
   //   if (localStorage.getItem("jwt")) {
@@ -160,10 +160,10 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      {loggedIn && <Header handleLogout={handleLogout} />}
+      <Header handleLogout={handleLogout} />
       <Switch>
         <ProtectedRoute
-          path="/"
+          path="/profile"
           loggedIn={loggedIn}
           component={Main}
           onEditProfileClick={handleEditProfileClick}
@@ -175,57 +175,57 @@ function App() {
           onCardLike={handleCardLike}
           onCardDelete={handleCardDelete}
         />
-        <Route path="/register">
+        <Route path="/signup">
           <Register />
         </Route>
-        <Route path="/login">
+        <Route path="/signin">
           <Login handleLogin={handleLogin} />
         </Route>
-        <Route exact path="/">
-          {loggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
+        <Route>
+          {loggedIn ? <Redirect to="/profile" /> : <Redirect to="/signup" />}
         </Route>
-
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-        />
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
-
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-        />
-
-        <PopupWithForm
-          isOpen={isConfirmDeletePopupOpen}
-          onClose={closeAllPopups}
-          name="confirm"
-          title="Are you sure?"
-          buttonText="Yes"
-        />
-
-        <ImagePopup
-          card={selectedCard}
-          onClose={closeAllPopups}
-          isOpen={isPreviewImagePopupOpen}
-          name="preview"
-        />
-
-        <PopupWithForm
-          isOpen={isConfirmDeletePopupOpen}
-          onClose={closeAllPopups}
-          name="confirm"
-          title="Are you sure?"
-          buttonText="Yes"
-        />
-        <Footer />
       </Switch>
+
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+      />
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleUpdateAvatar}
+      />
+
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+        onAddPlace={handleAddPlaceSubmit}
+      />
+
+      <PopupWithForm
+        isOpen={isConfirmDeletePopupOpen}
+        onClose={closeAllPopups}
+        name="confirm"
+        title="Are you sure?"
+        buttonText="Yes"
+      />
+
+      <ImagePopup
+        card={selectedCard}
+        onClose={closeAllPopups}
+        isOpen={isPreviewImagePopupOpen}
+        name="preview"
+      />
+
+      <PopupWithForm
+        isOpen={isConfirmDeletePopupOpen}
+        onClose={closeAllPopups}
+        name="confirm"
+        title="Are you sure?"
+        buttonText="Yes"
+      />
+      <Footer />
     </CurrentUserContext.Provider>
   );
 }

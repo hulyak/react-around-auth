@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth.js";
 
-const Login = () => {
+const Login = ({ handleLogin }) => {
   const history = useHistory();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -12,11 +13,8 @@ const Login = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
-    // setUser((prevState) => ({
-    //   ...prevState,
-    //   [name]: value,
-    // }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!user.email || !user.password) {
@@ -34,41 +32,46 @@ const Login = () => {
   };
 
   return (
-    <>
-      <p>Log in</p>
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="username">Email:</label>
-        <input
-          required
-          id="username"
-          name="username"
-          type="text"
-          value={user.username}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          required
-          id="password"
-          name="password"
-          type="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Password"
-        />
-        <div>
-          <button type="submit" onSubmit={handleSubmit}>
-            Log in
-          </button>
-        </div>
+    <div className="login">
+      <h2 className="login__title">Log in</h2>
+      <form className="login__form">
+        <label htmlFor="username">
+          <input
+            className="login__form-email"
+            placeholder="Email"
+            type="text"
+            name="email"
+            minLength={2}
+            maxLength={40}
+            required
+            value={user.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor="password">
+          <input
+            className="login__form-password"
+            placeholder="Password"
+            type="password"
+            name="password"
+            minLength={2}
+            maxLength={10}
+            required
+            value={user.password}
+            onChange={handleChange}
+          />
+        </label>
+        <button className="login__submit" type="submit">
+          Log In
+        </button>
       </form>
-
-      <div>
-        <p>Not a member yet? </p>
-        <Link to="/register">Sign up here!</Link>
-      </div>
-    </>
+      <p className="login__text">
+        Not a member yet?
+        <Link to="/register" className="login__text_link">
+          Sign up here!
+        </Link>
+      </p>
+    </div>
   );
 };
 

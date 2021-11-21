@@ -24,10 +24,12 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user.password === user.confirmPassword) {
-      auth.register(user.username, user.password, user.email).then((res) => {
+      auth.register(user.email, user.password).then((res) => {
         if (res.statusCode !== 400) {
           history.push("/login");
           resetForm();
+        } else {
+          alert("Sorry, try again!");
         }
       });
     }
@@ -35,9 +37,9 @@ const Register = () => {
 
   const resetForm = () => {
     setUser({
-      username: "",
       email: "",
       password: "",
+      confirmPassword: "",
     });
   };
 
@@ -45,32 +47,36 @@ const Register = () => {
     <>
       <p className="register__welcome">Sign Up</p>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          value={user.email}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        <label htmlFor="password">Password:</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value={user.password}
-          onChange={handleChange}
-          placeholder="Password"
-        />
-        <label htmlFor="confirmPassword">Confirm password:</label>
-        <input
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          value={user.confirmPassword}
-          onChange={handleChange}
-        />
+        <label htmlFor="email">
+          Email
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="Email"
+          />
+        </label>
+        <label htmlFor="password">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Password"
+          />
+        </label>
+        <label htmlFor="confirmPassword">
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            value={user.confirmPassword}
+            onChange={handleChange}
+          />
+        </label>
 
         <button type="submit" onSubmit={handleSubmit}>
           Sign up

@@ -1,26 +1,19 @@
-Around the U.S. project on React, featuring authorization and registration.
+# React around Auth
 
-This repository will contain your own front-end project on React with added authorization and registration features.
-Start working with your previously built front end code from Sprint 11.
+React with Authorization and Registration
 
-All authorization, registration and token requests must go through to the server running on [https://register.nomoreparties.co](https://register.nomoreparties.co/).
+All authorization, registration and token requests go through to the server running on [https://register.nomoreparties.co](https://register.nomoreparties.co/).
 
-Good luck!
+The website is hosted on Github pages.
 
-# Around the U.S.
-
-This is the refactoring of the same project [Around the U.S.](https://github.com/hulyak/web_project_4) which doesn't use any frameworks. This project uses React.js, hooks and Context Api. 
-
-The website is hosted on Github pages. 
-
+Figma files for Registration and Login flow are available [here](https://www.figma.com/file/brlYXERnRMyidy2DwpaZL0/Sprint-14%3A-Registration-and-Authorization).
 
 ## Installation
 
-```bash 
+```bash
 npm install  # install dependencies
 npm start # start development server
 
 npm run predeploy # build production version
 npm run deploy # deploy to github pages
 ```
-

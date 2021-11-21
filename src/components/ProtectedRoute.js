@@ -1,12 +1,11 @@
-import { Route, Link } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
 // wrapper component for protected routes
-
 const ProtectedRoute = ({ component: Component, ...props }) => {
   return (
     <Route>
       {() =>
-        props.loggedIn ? <Component {...props} /> : <Link to="./login" />
+        props.loggedIn ? <Component {...props} /> : <Redirect to="./login" />
       }
     </Route>
   );
