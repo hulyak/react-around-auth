@@ -38,8 +38,6 @@ const Login = ({ onLogin }) => {
             placeholder="Email"
             type="email"
             name="email"
-            minLength={2}
-            maxLength={40}
             required
             value={user.email}
             onChange={handleChange}

@@ -14,7 +14,7 @@ const Register = ({ onRegister }) => {
     if (localStorage.getItem("token")) {
       history.push("/");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e) => {
@@ -47,6 +47,7 @@ const Register = ({ onRegister }) => {
             id="email"
             name="email"
             type="email"
+            required
             value={user.email}
             onChange={handleChange}
             placeholder="Email"
@@ -58,6 +59,9 @@ const Register = ({ onRegister }) => {
             id="password"
             name="password"
             type="password"
+            minLength={2}
+            maxLength={40}
+            required
             value={user.password}
             onChange={handleChange}
             placeholder="Password"
@@ -69,6 +73,9 @@ const Register = ({ onRegister }) => {
             id="confirmPassword"
             name="confirmPassword"
             type="password"
+            minLength={2}
+            maxLength={40}
+            required
             value={user.confirmPassword}
             onChange={handleChange}
             placeholder="Confirm Password"
