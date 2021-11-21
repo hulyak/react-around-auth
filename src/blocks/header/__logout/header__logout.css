@@ -3,7 +3,7 @@
   font-size: 18px;
   line-height: 22px;
   text-align: right;
-  color: #a9a9a9;
+  color: #fff;
   border: 0;
   outline: none;
   cursor: pointer;
@@ -11,4 +11,16 @@
   padding: 0;
   padding-left: 24px;
   background-color: #000;
+  text-decoration: none;
 }
+
+.header__logout:hover {
+ color: #a9a9a9;
+}
+
+.header__logout:active{
+  color: #a9a9a9;
+}
+
+
+

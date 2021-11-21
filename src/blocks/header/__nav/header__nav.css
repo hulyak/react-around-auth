@@ -6,3 +6,10 @@
   justify-content: space-around;
   align-items: center;
 }
+
+@media only screen and (max-width: 515px) {
+  .header__nav {
+    
+   
+  }
+}

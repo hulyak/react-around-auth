@@ -14,7 +14,8 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
   const { name, about } = formFields;
 
   const handleChange = (e) => {
-    setFormFields({ ...formFields, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormFields({ ...formFields, [name]: value });
   };
 
   // After loading the current user from the API their data will be used in managed components

@@ -1,16 +1,11 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import * as auth from "../utils/auth.js";
+import { Link } from "react-router-dom";
 
-const Login = ({ handleLogin }) => {
-  const history = useHistory();
-
+const Login = ({ onLogin }) => {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
-
-  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,18 +17,15 @@ const Login = ({ handleLogin }) => {
     if (!user.email || !user.password) {
       return;
     }
-    auth
-      .authorize(user.email, user.password)
-      .then((data) => {
-        if (data.jwt) {
-          setUser({ email: "", password: "" });
-          handleLogin();
-          history.push("/profile");
-        } else {
-          setMessage("Invalid email or password");
-        }
-      })
-      .catch((err) => console.log(err));
+    resetForm();
+    onLogin(user.email, user.password);
+  };
+
+  const resetForm = () => {
+    setUser({
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -73,7 +65,7 @@ const Login = ({ handleLogin }) => {
 
       <p className="login__text">
         Not a member yet?
-        <Link to="/register" className="login__link">
+        <Link to="/signup" className="login__link">
           Sign up here!
         </Link>
       </p>

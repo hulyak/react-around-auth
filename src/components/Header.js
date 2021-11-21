@@ -1,28 +1,34 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../images/Logo.svg";
 
-const Header = (props) => {
-  const history = useHistory();
+const Header = ({ title, userEmail, onLogout, link }) => {
+  // const [toggleMenu, setToggleMenu] = useState(false);
 
-  const signOut = () => {
-    props.handleLogout();
-    localStorage.removeItem("jwt");
-    history.push("/signin");
-  };
+  // const handleToggleButton = () => {
+  //   setToggleMenu(!toggleMenu);
+  // };
+
   return (
     <header className="header">
       <img src={logo} alt="Logo of Around the U.S" className="header__logo" />
+      {/* <FontAwesomeIcon icon={faBars} size="lg" onClick={handleToggleButton} /> */}
+      {/* {toggleMenu && ( */}
       <ul className="header__nav">
+        {userEmail && (
+          <li>
+            <p className="header__email">{userEmail}</p>
+          </li>
+        )}
         <li>
-          <p className="header__email">{props.userEmail}email@email.com</p>
-        </li>
-        <li>
-          <button onClick={signOut} className="header__logout">
-            Log out
-          </button>
+          <Link to={link} onClick={onLogout} className="header__logout">
+            {title}
+          </Link>
         </li>
       </ul>
+      {/* )} */}
     </header>
   );
 };

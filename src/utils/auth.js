@@ -26,10 +26,13 @@ export const authorize = (email, password) => {
     body: JSON.stringify({ email, password }),
   })
     .then((response) => response.json())
+
     .then((data) => {
-      if (data.jwt) {
-        localStorage.setItem("jwt", data.jwt);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
         return data;
+      } else {
+        return;
       }
     })
     .catch((err) => console.log(err));

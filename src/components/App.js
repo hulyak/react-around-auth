@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
-import Footer from "./Footer";
 import Header from "./Header";
 import ImagePopup from "./ImagePopup";
 import Main from "./Main";
@@ -63,24 +62,45 @@ function App() {
   // Authentication and Authorization
   const [loggedIn, setLoggedIn] = useState(true);
   const [userEmail, setUserEmail] = useState("");
+  const [isSucceeded, setIsSucceeded] = useState(false);
 
   useEffect(() => {
     handleTokenCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleRegister = (email, password) => {
+    auth
+      .register(email, password)
+      .then((res) => {
+        if (res) {
+          setIsSucceeded(true);
+          setInfoTooltipOpen(true);
+          history.push("/signin");
+        } else {
+          setIsSucceeded(false);
+          setInfoTooltipOpen(true);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setInfoTooltipOpen(true);
+      });
+  };
 
   // if the user has a token in localStorage,
   // this function will check that the user has a valid token
   const handleTokenCheck = () => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
+    const token = localStorage.getItem("token");
+    if (token) {
       auth
-        .checkToken(jwt)
+        .checkToken(token)
         .then((res) => {
-          if (res.status === 200) {
-            setLoggedIn(true);
-            setUserEmail(res.data.email);
-            history.push("/profile");
-          }
+          setLoggedIn(true);
+          setUserEmail(res.data.email);
+          setIsSucceeded(true);
+          setInfoTooltipOpen(true);
+          history.push("/");
         })
         .catch((err) => console.error(err));
     } else {
@@ -88,12 +108,29 @@ function App() {
     }
   };
 
-  const handleLogin = () => {
-    setLoggedIn(true);
+  const handleLogin = (email, password) => {
+    auth
+      .authorize(email, password)
+      .then((res) => {
+        if (!res) {
+          setInfoTooltipOpen(true);
+          setLoggedIn(false);
+          setIsSucceeded(false);
+        }
+        handleTokenCheck();
+      })
+      .catch((err) => {
+        console.log(err);
+        setInfoTooltipOpen(true);
+        setIsSucceeded(false);
+      });
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     setLoggedIn(false);
+    setUserEmail("");
+    history.push("/signin");
   };
 
   useEffect(() => {
@@ -176,10 +213,10 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header handleLogout={handleLogout} userEmail={userEmail} />
       <Switch>
         <ProtectedRoute
-          path="/profile"
+          exact
+          path="/"
           loggedIn={loggedIn}
           component={Main}
           onEditProfileClick={handleEditProfileClick}
@@ -190,19 +227,28 @@ function App() {
           cards={cards}
           onCardLike={handleCardLike}
           onCardDelete={handleCardDelete}
+          onLogoutClick={handleLogout}
+          userEmail={userEmail}
         />
         <Route path="/signup">
-          <Register />
+          <Header title="Sign In" link="/signin" />
+          <Register onRegister={handleRegister} />
         </Route>
         <Route path="/signin">
-          <Login handleLogin={handleLogin} />
+          <Header title="Sign Up" link="/signup" />
+          <Login onLogin={handleLogin} />
         </Route>
         <Route>
-          {loggedIn ? <Redirect to="/profile" /> : <Redirect to="/signup" />}
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
         </Route>
       </Switch>
 
-      <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} />
+      <InfoTooltip
+        isOpen={isInfoTooltipOpen}
+        onClose={closeAllPopups}
+        name="infoTooltip"
+        success={isSucceeded}
+      />
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import Header from "./Header";
 
 const Main = ({
   onEditProfileClick,
@@ -11,11 +12,19 @@ const Main = ({
   cards,
   onCardLike,
   onCardDelete,
+  userEmail,
+  onLogoutClick,
 }) => {
   const currentUser = useContext(CurrentUserContext);
 
   return (
     <main>
+      <Header
+        onLogout={onLogoutClick}
+        link="/"
+        title="Log out"
+        userEmail={userEmail}
+      />
       <section className="profile">
         <div>
           <div

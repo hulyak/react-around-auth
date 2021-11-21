@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
-import * as auth from "../utils/auth.js";
 
-const Register = () => {
+const Register = ({ onRegister }) => {
   const history = useHistory();
+
   const [user, setUser] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [message, setMessage] = useState("");
-
   useEffect(() => {
-    if (localStorage.getItem("jwt")) {
-      history.push("/diary");
+    if (localStorage.getItem("token")) {
+      history.push("/");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e) => {
@@ -26,14 +25,8 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user.password === user.confirmPassword) {
-      auth.register(user.email, user.password).then((res) => {
-        if (res) {
-          history.push("/login");
-          resetForm();
-        } else {
-          setMessage(res.message);
-        }
-      });
+      resetForm();
+      onRegister(user.email, user.password);
     }
   };
 
@@ -78,6 +71,7 @@ const Register = () => {
             type="password"
             value={user.confirmPassword}
             onChange={handleChange}
+            placeholder="Confirm Password"
             className="register__input"
           />
         </label>
@@ -91,12 +85,12 @@ const Register = () => {
         </button>
       </form>
 
-      <div className="register__text">
-        <p>Already a member?</p>
-        <Link to="signin" className="login__link">
+      <p className="register__text">
+        Already a member?
+        <Link to="signin" className="register__link">
           Log in here!
         </Link>
-      </div>
+      </p>
     </section>
   );
 };
