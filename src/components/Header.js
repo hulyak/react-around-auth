@@ -5,15 +5,24 @@ import logo from "../images/Logo.svg";
 const Header = (props) => {
   const history = useHistory();
 
-  function signOut() {
+  const signOut = () => {
     props.handleLogout();
     localStorage.removeItem("jwt");
-    history.push("/login");
-  }
+    history.push("/signin");
+  };
   return (
     <header className="header">
       <img src={logo} alt="Logo of Around the U.S" className="header__logo" />
-      <button onClick={signOut}>Log out</button>
+      <ul className="header__nav">
+        <li>
+          <p className="header__email">{props.userEmail}email@email.com</p>
+        </li>
+        <li>
+          <button onClick={signOut} className="header__logout">
+            Log out
+          </button>
+        </li>
+      </ul>
     </header>
   );
 };

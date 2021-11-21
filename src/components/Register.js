@@ -10,6 +10,8 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [message, setMessage] = useState("");
+
   useEffect(() => {
     if (localStorage.getItem("jwt")) {
       history.push("/diary");
@@ -25,11 +27,11 @@ const Register = () => {
     e.preventDefault();
     if (user.password === user.confirmPassword) {
       auth.register(user.email, user.password).then((res) => {
-        if (res.statusCode !== 400) {
+        if (res) {
           history.push("/login");
           resetForm();
         } else {
-          alert("Sorry, try again!");
+          setMessage(res.message);
         }
       });
     }
@@ -44,11 +46,10 @@ const Register = () => {
   };
 
   return (
-    <>
-      <p className="register__welcome">Sign Up</p>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">
-          Email
+    <section className="register">
+      <p className="register__title">Sign Up</p>
+      <form onSubmit={handleSubmit} className="register__form">
+        <label htmlFor="email" className="register__form-field">
           <input
             id="email"
             name="email"
@@ -56,9 +57,10 @@ const Register = () => {
             value={user.email}
             onChange={handleChange}
             placeholder="Email"
+            className="register__input"
           />
         </label>
-        <label htmlFor="password">
+        <label htmlFor="password" className="register__form-field">
           <input
             id="password"
             name="password"
@@ -66,28 +68,36 @@ const Register = () => {
             value={user.password}
             onChange={handleChange}
             placeholder="Password"
+            className="register__input"
           />
         </label>
-        <label htmlFor="confirmPassword">
+        <label htmlFor="confirmPassword" className="register__form-field">
           <input
             id="confirmPassword"
             name="confirmPassword"
             type="password"
             value={user.confirmPassword}
             onChange={handleChange}
+            className="register__input"
           />
         </label>
 
-        <button type="submit" onSubmit={handleSubmit}>
+        <button
+          type="submit"
+          onSubmit={handleSubmit}
+          className="register__button"
+        >
           Sign up
         </button>
       </form>
 
-      <div className="register__signin">
-        <p>Already a member? Log in here!</p>
-        <Link to="login">Log in here</Link>
+      <div className="register__text">
+        <p>Already a member?</p>
+        <Link to="signin" className="login__link">
+          Log in here!
+        </Link>
       </div>
-    </>
+    </section>
   );
 };
 

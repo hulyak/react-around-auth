@@ -10,6 +10,8 @@ const Login = ({ handleLogin }) => {
     password: "",
   });
 
+  const [message, setMessage] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -21,25 +23,28 @@ const Login = ({ handleLogin }) => {
       return;
     }
     auth
-      .authorize(user.username, user.password)
+      .authorize(user.email, user.password)
       .then((data) => {
         if (data.jwt) {
-          setUser({ ...user, email: "", password: "" });
-          history.push("/");
+          setUser({ email: "", password: "" });
+          handleLogin();
+          history.push("/profile");
+        } else {
+          setMessage("Invalid email or password");
         }
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <div className="login">
+    <section className="login">
       <h2 className="login__title">Log in</h2>
-      <form className="login__form">
-        <label htmlFor="username">
+      <form className="login__form" onSubmit={handleSubmit}>
+        <label htmlFor="username" className="login__form-field">
           <input
-            className="login__form-email"
+            className="login__input"
             placeholder="Email"
-            type="text"
+            type="email"
             name="email"
             minLength={2}
             maxLength={40}
@@ -48,9 +53,9 @@ const Login = ({ handleLogin }) => {
             onChange={handleChange}
           />
         </label>
-        <label htmlFor="password">
+        <label htmlFor="password" className="login__form-field">
           <input
-            className="login__form-password"
+            className="login__input"
             placeholder="Password"
             type="password"
             name="password"
@@ -61,17 +66,18 @@ const Login = ({ handleLogin }) => {
             onChange={handleChange}
           />
         </label>
-        <button className="login__submit" type="submit">
+        <button className="login__button" type="submit">
           Log In
         </button>
       </form>
+
       <p className="login__text">
         Not a member yet?
-        <Link to="/register" className="login__text_link">
+        <Link to="/register" className="login__link">
           Sign up here!
         </Link>
       </p>
-    </div>
+    </section>
   );
 };
 

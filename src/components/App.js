@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import ImagePopup from "./ImagePopup";
@@ -8,15 +8,18 @@ import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
+import Register from "./Register";
+import Login from "./Login";
 import * as auth from "../utils/auth";
 import api from "../utils/api";
 import avatar from "../images/avatar.png";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import ProtectedRoute from "./ProtectedRoute";
-import Register from "./Register";
-import Login from "./Login";
 
 function App() {
+  const history = useHistory();
+
   // Context for Current User
   const [currentUser, setCurrentUser] = useState({
     name: "",
@@ -32,6 +35,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
     useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
 
   const [isPreviewImagePopupOpen, setIsPreviewImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
@@ -41,18 +45,55 @@ function App() {
   const handleAddPlaceClick = () => setIsAddPlacePopupOpen(true);
   const handleConfirmDeleteClick = () => setIsConfirmDeletePopupOpen(true);
 
-  // Image preview
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
-    setIsPreviewImagePopupOpen(true);
-  };
-
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsConfirmDeletePopupOpen(false);
     setIsPreviewImagePopupOpen(false);
+    setInfoTooltipOpen(false);
+  };
+
+  // Image preview
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+    setIsPreviewImagePopupOpen(true);
+  };
+
+  // Authentication and Authorization
+  const [loggedIn, setLoggedIn] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    handleTokenCheck();
+  }, []);
+
+  // if the user has a token in localStorage,
+  // this function will check that the user has a valid token
+  const handleTokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res.status === 200) {
+            setLoggedIn(true);
+            setUserEmail(res.data.email);
+            history.push("/profile");
+          }
+        })
+        .catch((err) => console.error(err));
+    } else {
+      setLoggedIn(false);
+    }
+  };
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false);
   };
 
   useEffect(() => {
@@ -133,34 +174,9 @@ function App() {
       .catch((err) => console.error(err));
   };
 
-  // Authentication and Authorization
-  const [loggedIn, setLoggedIn] = useState(true);
-
-  // const handleTokenCheck = () => {
-  //   if (localStorage.getItem("jwt")) {
-  //     const jwt = localStorage.getItem("jwt");
-  //     auth.checkToken(jwt).then((res) => {
-  //       if (res.status === 200) {
-  //         setLoggedIn(true);
-  //         <Navigate to="/profile" />;
-  //       }
-  //     });
-  //   } else {
-  //     setLoggedIn(false);
-  //   }
-  // };
-
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(false);
-  };
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header handleLogout={handleLogout} />
+      <Header handleLogout={handleLogout} userEmail={userEmail} />
       <Switch>
         <ProtectedRoute
           path="/profile"
@@ -185,6 +201,8 @@ function App() {
           {loggedIn ? <Redirect to="/profile" /> : <Redirect to="/signup" />}
         </Route>
       </Switch>
+
+      <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} />
 
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
@@ -225,7 +243,7 @@ function App() {
         title="Are you sure?"
         buttonText="Yes"
       />
-      <Footer />
+      {/* <Footer /> */}
     </CurrentUserContext.Provider>
   );
 }
