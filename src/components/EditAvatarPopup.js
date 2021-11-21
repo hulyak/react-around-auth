@@ -20,7 +20,7 @@ const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar }) => {
       buttonText="Save"
       onSubmit={handleSubmit}
     >
-      <label className="popup__form-field">
+      <label className="popup__form-field" htmlFor="avatar-input">
         <input
           type="url"
           name="avatar"

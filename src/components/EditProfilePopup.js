@@ -41,7 +41,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
       buttonText="Save"
       onSubmit={handleSubmit}
     >
-      <label className="popup__form-field">
+      <label className="popup__form-field" htmlFor="name-input">
         <input
           type="text"
           name="name"
@@ -56,7 +56,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
         />
         <span className="popup__input-error name-input-error" />
       </label>
-      <label className="popup__form-field">
+      <label className="popup__form-field" htmlFor="job-input">
         <input
           type="text"
           name="about"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import ImagePopup from "./ImagePopup";
@@ -136,19 +136,19 @@ function App() {
   // Authentication and Authorization
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleTokenCheck = () => {
-    if (localStorage.getItem("jwt")) {
-      const jwt = localStorage.getItem("jwt");
-      auth.checkToken(jwt).then((res) => {
-        if (res.status === 200) {
-          setLoggedIn(true);
-          <Navigate to="/profile" />;
-        }
-      });
-    } else {
-      setLoggedIn(false);
-    }
-  };
+  // const handleTokenCheck = () => {
+  //   if (localStorage.getItem("jwt")) {
+  //     const jwt = localStorage.getItem("jwt");
+  //     auth.checkToken(jwt).then((res) => {
+  //       if (res.status === 200) {
+  //         setLoggedIn(true);
+  //         <Navigate to="/profile" />;
+  //       }
+  //     });
+  //   } else {
+  //     setLoggedIn(false);
+  //   }
+  // };
 
   const handleLogin = () => {
     setLoggedIn(true);
@@ -161,7 +161,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       {loggedIn && <Header handleLogout={handleLogout} />}
-      <Routes>
+      <Switch>
         <ProtectedRoute
           path="/"
           loggedIn={loggedIn}
@@ -181,8 +181,8 @@ function App() {
         <Route path="/login">
           <Login handleLogin={handleLogin} />
         </Route>
-        <Route>
-          {loggedIn ? <Navigate to="/" /> : <Navigate to="/login" />}
+        <Route exact path="/">
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
         </Route>
 
         <EditProfilePopup
@@ -225,7 +225,7 @@ function App() {
           buttonText="Yes"
         />
         <Footer />
-      </Routes>
+      </Switch>
     </CurrentUserContext.Provider>
   );
 }
