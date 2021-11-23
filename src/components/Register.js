@@ -83,11 +83,7 @@ const Register = ({ onRegister }) => {
           />
         </label>
 
-        <button
-          type="submit"
-          onSubmit={handleSubmit}
-          className="register__button"
-        >
+        <button type="submit" className="register__button">
           Sign up
         </button>
       </form>

@@ -75,17 +75,13 @@ function App() {
       .then((res) => {
         if (res) {
           setIsSucceeded(true);
-          setInfoTooltipOpen(true);
           history.push("/signin");
         } else {
           setIsSucceeded(false);
-          setInfoTooltipOpen(true);
         }
       })
-      .catch((err) => {
-        console.error(err);
-        setInfoTooltipOpen(true);
-      });
+      .catch((err) => console.error(err))
+      .finally(() => setInfoTooltipOpen(true));
   };
 
   // if the user has a token in localStorage,
@@ -99,7 +95,6 @@ function App() {
           setLoggedIn(true);
           setUserEmail(res.data.email);
           setIsSucceeded(true);
-          setInfoTooltipOpen(true);
           history.push("/");
         })
         .catch((err) => console.error(err));
@@ -113,7 +108,6 @@ function App() {
       .authorize(email, password)
       .then((res) => {
         if (!res) {
-          setInfoTooltipOpen(true);
           setLoggedIn(false);
           setIsSucceeded(false);
         }
@@ -121,9 +115,9 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        setInfoTooltipOpen(true);
         setIsSucceeded(false);
-      });
+      })
+      .finally(() => setInfoTooltipOpen(true));
   };
 
   const handleLogout = () => {
