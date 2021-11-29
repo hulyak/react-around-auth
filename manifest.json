@@ -1,13 +1,12 @@
 {
-  
   "name": "Moments",
   "short_name": "Moments",
   "theme_color": "#000000",
-  "background_color": "#000000",
+  "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "/",
+  "start_url": ".",
   "icons": [
     {
       "src": "maskable_icon.png",
